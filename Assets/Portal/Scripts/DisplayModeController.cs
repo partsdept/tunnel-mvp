@@ -1,13 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Swaps the materials on the four Q quads to switch between
-/// display modes (solid color, test card, etc.). Bound to keys
-/// for live mode-switching during development and verification.
-///
-/// Attach to a manager GameObject in the scene. Wire each Renderer
-/// and material via the Inspector.
-/// </summary>
 public class DisplayModeController : MonoBehaviour
 {
     [Header("Q Quad Renderers")]
@@ -28,11 +20,15 @@ public class DisplayModeController : MonoBehaviour
     public Material q3TestCard;
     public Material q4TestCard;
 
+    [Header("Sweep Overlay (toggle V)")]
+    public GameObject sweepObject;
+
     void Start()
     {
-        // Default to test cards on launch — change to SetSolid() if you
-        // prefer solid colors as the default startup state.
         SetTestCards();
+        // Sweep starts hidden — uncomment to default visible:
+        // if (sweepObject != null) sweepObject.SetActive(true);
+        if (sweepObject != null) sweepObject.SetActive(false);
     }
 
     void Update()
@@ -44,6 +40,10 @@ public class DisplayModeController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.T))
         {
             SetTestCards();
+        }
+        else if (Input.GetKeyDown(KeyCode.V))
+        {
+            ToggleSweep();
         }
     }
 
@@ -63,5 +63,17 @@ public class DisplayModeController : MonoBehaviour
         q3Renderer.material = q3TestCard;
         q4Renderer.material = q4TestCard;
         Debug.Log("Display mode: test cards");
+    }
+
+    void ToggleSweep()
+    {
+        if (sweepObject == null)
+        {
+            Debug.LogWarning("Sweep object not assigned");
+            return;
+        }
+        bool nowActive = !sweepObject.activeSelf;
+        sweepObject.SetActive(nowActive);
+        Debug.Log("Sweep: " + (nowActive ? "on" : "off"));
     }
 }
