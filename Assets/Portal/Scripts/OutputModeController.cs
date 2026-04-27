@@ -2,12 +2,12 @@ using UnityEngine;
 
 /// <summary>
 /// Controls which render texture is shown on the output quad.
-/// Modes are independent rendering pipelines (Q-pipeline composite,
-/// slideshow, arch). Hotkeys cycle between them.
+/// Modes are independent rendering pipelines; hotkeys cycle between them.
 ///
 /// O = Q-pipeline composite (QPipeline_RT)
 /// L = slideshow (Slideshow_RT)
-/// A = arch (ArchPlate_RT)
+/// A = arch 2D canvas (ArchPlate_RT)
+/// 3 = arch 3D test scene (Arch3DPlate_RT)
 /// </summary>
 public class OutputModeController : MonoBehaviour
 {
@@ -18,8 +18,9 @@ public class OutputModeController : MonoBehaviour
     public RenderTexture qPipelineRT;
     public RenderTexture slideshowRT;
     public RenderTexture archRT;
+    public RenderTexture arch3DRT;
 
-    public enum Mode { QPipeline, Slideshow, Arch }
+    public enum Mode { QPipeline, Slideshow, Arch, Arch3D }
 
     [SerializeField] private Mode startMode = Mode.QPipeline;
     private Mode currentMode;
@@ -43,6 +44,10 @@ public class OutputModeController : MonoBehaviour
         {
             SetMode(Mode.Arch);
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SetMode(Mode.Arch3D);
+        }
     }
 
     public void SetMode(Mode mode)
@@ -59,6 +64,7 @@ public class OutputModeController : MonoBehaviour
             case Mode.QPipeline: target = qPipelineRT; break;
             case Mode.Slideshow: target = slideshowRT; break;
             case Mode.Arch:      target = archRT;      break;
+            case Mode.Arch3D:    target = arch3DRT;    break;
         }
 
         if (target == null)
