@@ -2,10 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// Controls overlays that operate independently of display mode.
-/// Currently handles the heartbeat sweep (V) and particle/sparkle (K).
-/// Replaces the old DisplayModeController, which used to manage both
-/// content swaps and overlays. Content swaps now live in
-/// OutputModeController; this is just for cross-mode overlays.
+/// Sweep (V), particle (K), text (X). All toggle GameObject active state.
 /// </summary>
 public class OverlayController : MonoBehaviour
 {
@@ -15,10 +12,14 @@ public class OverlayController : MonoBehaviour
     [Header("Particle / sparkle overlay (toggle K)")]
     public GameObject particleObject;
 
+    [Header("Text overlay (toggle X)")]
+    public GameObject textObject;
+
     void Start()
     {
         if (sweepObject != null) sweepObject.SetActive(false);
         if (particleObject != null) particleObject.SetActive(false);
+        if (textObject != null) textObject.SetActive(false);
     }
 
     void Update()
@@ -31,15 +32,15 @@ public class OverlayController : MonoBehaviour
         {
             ToggleParticle();
         }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            ToggleText();
+        }
     }
 
     void ToggleSweep()
     {
-        if (sweepObject == null)
-        {
-            Debug.LogWarning("Sweep object not assigned");
-            return;
-        }
+        if (sweepObject == null) { Debug.LogWarning("Sweep object not assigned"); return; }
         bool nowActive = !sweepObject.activeSelf;
         sweepObject.SetActive(nowActive);
         Debug.Log("Sweep: " + (nowActive ? "on" : "off"));
@@ -47,13 +48,17 @@ public class OverlayController : MonoBehaviour
 
     void ToggleParticle()
     {
-        if (particleObject == null)
-        {
-            Debug.LogWarning("Particle object not assigned");
-            return;
-        }
+        if (particleObject == null) { Debug.LogWarning("Particle object not assigned"); return; }
         bool nowActive = !particleObject.activeSelf;
         particleObject.SetActive(nowActive);
         Debug.Log("Particle: " + (nowActive ? "on" : "off"));
+    }
+
+    void ToggleText()
+    {
+        if (textObject == null) { Debug.LogWarning("Text object not assigned"); return; }
+        bool nowActive = !textObject.activeSelf;
+        textObject.SetActive(nowActive);
+        Debug.Log("Text: " + (nowActive ? "on" : "off"));
     }
 }
