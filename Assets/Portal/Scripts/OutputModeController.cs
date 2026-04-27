@@ -3,23 +3,23 @@ using UnityEngine;
 /// <summary>
 /// Controls which render texture is shown on the output quad.
 /// Modes are independent rendering pipelines (Q-pipeline composite,
-/// slideshow, eventually arch). Hotkeys cycle between them.
+/// slideshow, arch). Hotkeys cycle between them.
 ///
-/// O = Q-pipeline composite (Master_RT)
+/// O = Q-pipeline composite (QPipeline_RT)
 /// L = slideshow (Slideshow_RT)
-/// (more modes added later — A for arch, etc.)
+/// A = arch (ArchPlate_RT)
 /// </summary>
 public class OutputModeController : MonoBehaviour
 {
     [Header("Output target")]
-    [Tooltip("The material on Output_Quad whose Base Map is swapped.")]
     public Material outputMaterial;
 
     [Header("Mode render textures")]
     public RenderTexture qPipelineRT;
     public RenderTexture slideshowRT;
+    public RenderTexture archRT;
 
-    public enum Mode { QPipeline, Slideshow }
+    public enum Mode { QPipeline, Slideshow, Arch }
 
     [SerializeField] private Mode startMode = Mode.QPipeline;
     private Mode currentMode;
@@ -39,6 +39,10 @@ public class OutputModeController : MonoBehaviour
         {
             SetMode(Mode.Slideshow);
         }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            SetMode(Mode.Arch);
+        }
     }
 
     public void SetMode(Mode mode)
@@ -54,6 +58,7 @@ public class OutputModeController : MonoBehaviour
         {
             case Mode.QPipeline: target = qPipelineRT; break;
             case Mode.Slideshow: target = slideshowRT; break;
+            case Mode.Arch:      target = archRT;      break;
         }
 
         if (target == null)
