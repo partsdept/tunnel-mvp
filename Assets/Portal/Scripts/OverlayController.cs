@@ -1,40 +1,45 @@
 using UnityEngine;
 
 /// <summary>
-/// Controls overlays that operate independently of display mode.
-/// Sweep (V), particle (K), text (X). All toggle GameObject active state.
+/// Cross-mode overlays and view toggles.
+///
+/// Hotkeys:
+///   H   heartbeat sweep (output layer)
+///   D   debug overlay text (output layer)
+///   TAB toggle between flat 8K view and 3D arch preview
 /// </summary>
 public class OverlayController : MonoBehaviour
 {
-    [Header("Sweep overlay (toggle V)")]
+    [Header("Heartbeat sweep (toggle H)")]
     public GameObject sweepObject;
 
-    [Header("Particle / sparkle overlay (toggle K)")]
-    public GameObject particleObject;
+    [Header("Debug overlay text (toggle D)")]
+    public GameObject debugOverlayObject;
 
-    [Header("Text overlay (toggle X)")]
-    public GameObject textObject;
+    [Header("View toggle (TAB)")]
+    public Camera outputCamera;
+    public Camera preview3DCamera;
 
     void Start()
     {
         if (sweepObject != null) sweepObject.SetActive(false);
-        if (particleObject != null) particleObject.SetActive(false);
-        if (textObject != null) textObject.SetActive(false);
+        if (debugOverlayObject != null) debugOverlayObject.SetActive(false);
+        SetPreviewActive(false);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKeyDown(KeyCode.H))
         {
             ToggleSweep();
         }
-        else if (Input.GetKeyDown(KeyCode.K))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
-            ToggleParticle();
+            ToggleDebugOverlay();
         }
-        else if (Input.GetKeyDown(KeyCode.X))
+        else if (Input.GetKeyDown(KeyCode.Tab))
         {
-            ToggleText();
+            TogglePreview();
         }
     }
 
@@ -46,19 +51,29 @@ public class OverlayController : MonoBehaviour
         Debug.Log("Sweep: " + (nowActive ? "on" : "off"));
     }
 
-    void ToggleParticle()
+    void ToggleDebugOverlay()
     {
-        if (particleObject == null) { Debug.LogWarning("Particle object not assigned"); return; }
-        bool nowActive = !particleObject.activeSelf;
-        particleObject.SetActive(nowActive);
-        Debug.Log("Particle: " + (nowActive ? "on" : "off"));
+        if (debugOverlayObject == null) { Debug.LogWarning("Debug overlay object not assigned"); return; }
+        bool nowActive = !debugOverlayObject.activeSelf;
+        debugOverlayObject.SetActive(nowActive);
+        Debug.Log("Debug overlay: " + (nowActive ? "on" : "off"));
     }
 
-    void ToggleText()
+    void TogglePreview()
     {
-        if (textObject == null) { Debug.LogWarning("Text object not assigned"); return; }
-        bool nowActive = !textObject.activeSelf;
-        textObject.SetActive(nowActive);
-        Debug.Log("Text: " + (nowActive ? "on" : "off"));
+        if (outputCamera == null || preview3DCamera == null)
+        {
+            Debug.LogWarning("Output and/or Preview3D camera not assigned");
+            return;
+        }
+        bool previewIsActive = preview3DCamera.enabled;
+        SetPreviewActive(!previewIsActive);
+        Debug.Log("Preview3D: " + (!previewIsActive ? "on" : "off"));
+    }
+
+    private void SetPreviewActive(bool previewActive)
+    {
+        if (outputCamera != null) outputCamera.enabled = !previewActive;
+        if (preview3DCamera != null) preview3DCamera.enabled = previewActive;
     }
 }

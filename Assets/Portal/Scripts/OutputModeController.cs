@@ -1,20 +1,15 @@
 using UnityEngine;
 
 /// <summary>
-/// Owns all top-level display modes. Each mode is a complete description
-/// of what's on screen (which RT, which content variant if applicable).
-/// Hotkeys map 1:1 to modes — no nested sub-modes.
+/// Owns top-level display modes. Each mode is a complete description
+/// of what's on screen.
 ///
-/// Modes:
-///   C - Q-pipeline with solid colors      (color test)
-///   T - Q-pipeline with test cards        (alignment / readability test)
-///   L - Slideshow                          (16-screen mapping verification)
-///   A - Arch 2D canvas                     (markers and reference lines)
-///   3 - Arch 3D test scene                 (3D capacity benchmark)
-///
-/// Each mode toggles which mode-pipeline cameras render and, for the
-/// Q-pipeline content variants, swaps materials on the QComposite quads.
-/// Output_Camera is always-on and managed elsewhere.
+/// Hotkeys:
+///   C  Q-pipeline solid colors
+///   Q  Q-pipeline test cards
+///   S  Slideshow
+///   A  ArchCanvas (with nested M/T/P toggles via ArchCanvasController)
+///   3  Arch3D test scene
 /// </summary>
 public class OutputModeController : MonoBehaviour
 {
@@ -49,11 +44,11 @@ public class OutputModeController : MonoBehaviour
     [Header("Slideshow camera")]
     public Camera slideshowCamera;
 
-    [Header("Arch 2D cameras")]
+    [Header("ArchCanvas cameras")]
     public Camera archCamera;
     public Camera archCompositeCamera;
 
-    [Header("Arch 3D cameras")]
+    [Header("Arch3D cameras")]
     public Camera arch3DCamera;
     public Camera arch3DCompositeCamera;
 
@@ -69,6 +64,8 @@ public class OutputModeController : MonoBehaviour
     [SerializeField] private Mode startMode = Mode.QPipeline_TestCards;
     private Mode currentMode;
 
+    public Mode GetCurrentMode() => currentMode;
+
     void Start()
     {
         SetMode(startMode);
@@ -80,11 +77,11 @@ public class OutputModeController : MonoBehaviour
         {
             SetMode(Mode.QPipeline_Solid);
         }
-        else if (Input.GetKeyDown(KeyCode.T))
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
             SetMode(Mode.QPipeline_TestCards);
         }
-        else if (Input.GetKeyDown(KeyCode.L))
+        else if (Input.GetKeyDown(KeyCode.S))
         {
             SetMode(Mode.Slideshow);
         }
@@ -106,7 +103,6 @@ public class OutputModeController : MonoBehaviour
             return;
         }
 
-        // Disable all mode cameras first.
         SetCamerasEnabled(false, qCompositeCamera);
         SetCamerasEnabled(false, slideshowCamera);
         SetCamerasEnabled(false, archCamera, archCompositeCamera);

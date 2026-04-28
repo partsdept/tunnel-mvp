@@ -14,9 +14,10 @@ public class TextDrifter : MonoBehaviour
     [Tooltip("Drift speed in world units per second. Positive = left-to-right.")]
     public float driftSpeed = 1.0f;
 
-    [Tooltip("Half-width of the visible screen area in world units. " +
-             "Output_Camera at Size 5 with 16:9 aspect = 8.89.")]
-    public float screenHalfWidth = 8.89f;
+    [Tooltip("Half-width of the visible canvas/screen area in world units. " +
+             "ArchCanvas (Arch_Camera Size 5, 2.25:1) = 11.25. " +
+             "Output_Camera Size 5, 16:9 = 8.89.")]
+    public float screenHalfWidth = 11.25f;
 
     private TMP_Text tmp;
 
@@ -27,7 +28,6 @@ public class TextDrifter : MonoBehaviour
 
     void Update()
     {
-        // Force layout update so renderedWidth is current
         tmp.ForceMeshUpdate();
         float textWidth = tmp.renderedWidth;
         float halfText = textWidth / 2f;
@@ -37,9 +37,6 @@ public class TextDrifter : MonoBehaviour
 
         if (driftSpeed > 0f)
         {
-            // Moving right. Wrap when text's left edge crosses past the
-            // right screen edge (text fully gone), respawn with right
-            // edge at the left screen edge (one char's worth visible).
             if (pos.x - halfText > screenHalfWidth)
             {
                 pos.x = -screenHalfWidth - halfText;
@@ -47,8 +44,6 @@ public class TextDrifter : MonoBehaviour
         }
         else if (driftSpeed < 0f)
         {
-            // Moving left. Wrap when text's right edge crosses past the
-            // left screen edge, respawn with left edge at right screen edge.
             if (pos.x + halfText < -screenHalfWidth)
             {
                 pos.x = screenHalfWidth + halfText;
