@@ -13,6 +13,27 @@ The Display Mac is responsible for producing a single 8K (7680×4320) HDMI signa
 
 A 3D preview mode (TAB) shows whatever the active mode is producing, mapped onto the actual arch geometry from Rhino — letting the team see how content will look on the real physical structure without building it.
 
+## Running
+
+### First open (cloned repo, fresh Unity install)
+
+After opening the project for the first time, the Hierarchy may appear empty. To load the actual scene:
+
+1. In the Project panel, navigate to `Assets/Scenes/`
+2. Double-click `SampleScene.unity`
+
+The Hierarchy will populate with all the GameObjects (PortalControllers, ArchCanvas_Scene, Output_Scene, etc.). Unity remembers this for subsequent opens.
+
+If you see warnings about Input Manager being deprecated, ignore them. Verify Edit → Project Settings → Player → Other Settings → Active Input Handling is set to **Both**.
+
+If TextMeshPro shows errors, run Window → TextMeshPro → Import TMP Essential Resources.
+
+If the 3D preview shows no arch geometry (only an empty Preview3D_Scene), run Portal → Build Arch Preview Faces from the menu. This regenerates the 16 split face GameObjects from the imported OBJ.
+
+### Daily use
+
+Press Play in the editor, or build a standalone .app for fullscreen testing. Use the hotkeys below to switch modes.
+
 ## Hotkeys
 
 ```
@@ -34,6 +55,8 @@ Within ArchCanvas mode (no-op outside A):
   M     Markers (corner reference markers + apex/midline)
   T     Drifting title text
   P     Particle field
+  B     Backdrop image on/off
+  N     Cycle backdrop image
 
 Preview camera (when in 3D preview):
   R                    Reset to default view
@@ -72,6 +95,7 @@ ArchCanvas_Scene       — unrolled-arch canvas (renders Arch_RT)
   ArchCanvas_Camera
   ArchCanvas_Markers   — corner markers + reference lines
   ArchCanvas_DynamicText — 4 drifting TMP text instances
+  ArchCanvas_Backdrop  — cosmic background quad with cycling textures
   ArchParticleField    — particle system on arch canvas
 ArchComposite_Scene    — strip-and-rotate transform (Arch_RT → ArchPlate_RT)
 Arch3D_Scene           — 3D capacity-test content (renders Arch3D_RT)
@@ -84,7 +108,7 @@ PortalControllers      — empty GameObject hosting all controller scripts
 ### Controller scripts
 
 - **OutputModeController**: hotkey C/Q/S/A/3 → mode switching; manages camera enable states; sets Output_Material's Base Map
-- **ArchCanvasController**: hotkey M/T/P (nested under ArchCanvas mode); toggles markers/text/particles
+- **ArchCanvasController**: hotkey M/T/P/B/N (nested under ArchCanvas mode); toggles markers/text/particles/backdrop; cycles backdrop images
 - **OverlayController**: hotkey H/D/TAB; cross-mode overlays + flat/preview view toggle
 - **Preview3DController**: syncs 16 arch face materials with Output_Material's current Base Map
 - **OrbitCameraController**: orbit/pan/zoom/reset on Preview3D_Camera
@@ -141,12 +165,6 @@ The M4 Pro MacBook Pro hits ~63 fps in Arch3D mode — roughly 2× the Mini, sca
 ## Hardware target
 
 Apple M4 Mac Mini base ($600). Validates that the architecture works on the lowest tier of Apple Silicon currently shipping. Stronger hardware (M4 Pro, M4 Max) would give more headroom but isn't required for the demonstrated content profiles.
-
-## Running
-
-Clone, open in Unity Hub. Project is built with Unity 6 (specifically 6000.4.4f1 at time of writing). Press Play to run in editor, or build a standalone .app for fullscreen testing.
-
-For the OBJ import (arch geometry), the scale factor in import settings should be 0.003 to match the rest of the project's world unit conventions.
 
 ## Adding new content
 
