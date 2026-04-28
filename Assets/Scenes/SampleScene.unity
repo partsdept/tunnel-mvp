@@ -812,11 +812,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 75263596}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &87947270 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-  m_PrefabInstance: {fileID: 1604908599}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &89785026
 GameObject:
   m_ObjectHideFlags: 0
@@ -9199,79 +9194,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598042523}
   m_Mesh: {fileID: 4300000, guid: dbdf4307d6cb346c9b40ad7671dd728a, type: 2}
---- !u!1001 &1604908599
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1907824636}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_Name
-      value: PCI_SCREEN_FACES_ONLY_V2
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a540fdd2fa9554f4cb5a5d4253733c1d, type: 3}
 --- !u!1 &1621705729
 GameObject:
   m_ObjectHideFlags: 0
@@ -11533,7 +11455,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 87947270}
   - {fileID: 891074598}
   - {fileID: 1954009640}
   m_Father: {fileID: 0}
