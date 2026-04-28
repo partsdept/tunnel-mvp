@@ -1,21 +1,19 @@
 using UnityEngine;
 
 /// <summary>
-/// Controls layer-toggles within ArchCanvas mode (hotkey A).
-/// M, T, P, B, N only respond when ArchCanvas is the active output mode;
-/// no-ops in other modes to avoid surprising the user.
+/// Layer-toggles within ArchCanvas mode (hotkey A).
+/// M, T, P, B, N only respond when ArchCanvas is the active output mode.
 ///
-/// Hotkeys (active only in ArchCanvas mode):
-///   M  toggle markers (corner markers + reference lines)
-///   T  toggle dynamic drifting text
-///   P  toggle particle field
-///   B  toggle backdrop visibility
-///   N  cycle through backdrop images
+/// Hotkeys (also callable via OSC dispatch):
+///   M  markers
+///   T  dynamic text
+///   P  particle field
+///   B  backdrop on/off
+///   N  cycle backdrop image
 /// </summary>
 public class ArchCanvasController : MonoBehaviour
 {
     [Header("Mode reference")]
-    [Tooltip("Drag PortalControllers GameObject (or whichever has OutputModeController).")]
     public OutputModeController outputModeController;
 
     [Header("Layer GameObjects")]
@@ -24,11 +22,8 @@ public class ArchCanvasController : MonoBehaviour
     public GameObject particleObject;
 
     [Header("Backdrop")]
-    [Tooltip("The backdrop quad GameObject (toggled by B).")]
     public GameObject backdropObject;
-    [Tooltip("The backdrop's renderer (used to swap textures via N).")]
     public Renderer backdropRenderer;
-    [Tooltip("Textures cycled through by N. First is shown at startup.")]
     public Texture[] backdropTextures;
 
     [Header("Initial state")]
@@ -45,7 +40,6 @@ public class ArchCanvasController : MonoBehaviour
         if (dynamicTextObject != null) dynamicTextObject.SetActive(dynamicTextVisibleAtStart);
         if (particleObject != null) particleObject.SetActive(particleVisibleAtStart);
         if (backdropObject != null) backdropObject.SetActive(backdropVisibleAtStart);
-
         ApplyBackdropTexture();
     }
 
@@ -54,29 +48,14 @@ public class ArchCanvasController : MonoBehaviour
         if (outputModeController == null) return;
         if (outputModeController.GetCurrentMode() != OutputModeController.Mode.Arch) return;
 
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            ToggleMarkers();
-        }
-        else if (Input.GetKeyDown(KeyCode.T))
-        {
-            ToggleDynamicText();
-        }
-        else if (Input.GetKeyDown(KeyCode.P))
-        {
-            ToggleParticles();
-        }
-        else if (Input.GetKeyDown(KeyCode.B))
-        {
-            ToggleBackdrop();
-        }
-        else if (Input.GetKeyDown(KeyCode.N))
-        {
-            CycleBackdrop();
-        }
+        if (Input.GetKeyDown(KeyCode.M)) ToggleMarkersPublic();
+        else if (Input.GetKeyDown(KeyCode.T)) ToggleDynamicTextPublic();
+        else if (Input.GetKeyDown(KeyCode.P)) ToggleParticlesPublic();
+        else if (Input.GetKeyDown(KeyCode.B)) ToggleBackdropPublic();
+        else if (Input.GetKeyDown(KeyCode.N)) CycleBackdropPublic();
     }
 
-    void ToggleMarkers()
+    public void ToggleMarkersPublic()
     {
         if (markersObject == null) { Debug.LogWarning("Markers object not assigned"); return; }
         bool nowActive = !markersObject.activeSelf;
@@ -84,7 +63,7 @@ public class ArchCanvasController : MonoBehaviour
         Debug.Log("ArchCanvas markers: " + (nowActive ? "on" : "off"));
     }
 
-    void ToggleDynamicText()
+    public void ToggleDynamicTextPublic()
     {
         if (dynamicTextObject == null) { Debug.LogWarning("Dynamic text object not assigned"); return; }
         bool nowActive = !dynamicTextObject.activeSelf;
@@ -92,7 +71,7 @@ public class ArchCanvasController : MonoBehaviour
         Debug.Log("ArchCanvas dynamic text: " + (nowActive ? "on" : "off"));
     }
 
-    void ToggleParticles()
+    public void ToggleParticlesPublic()
     {
         if (particleObject == null) { Debug.LogWarning("Particle object not assigned"); return; }
         bool nowActive = !particleObject.activeSelf;
@@ -100,7 +79,7 @@ public class ArchCanvasController : MonoBehaviour
         Debug.Log("ArchCanvas particles: " + (nowActive ? "on" : "off"));
     }
 
-    void ToggleBackdrop()
+    public void ToggleBackdropPublic()
     {
         if (backdropObject == null) { Debug.LogWarning("Backdrop object not assigned"); return; }
         bool nowActive = !backdropObject.activeSelf;
@@ -108,7 +87,7 @@ public class ArchCanvasController : MonoBehaviour
         Debug.Log("ArchCanvas backdrop: " + (nowActive ? "on" : "off"));
     }
 
-    void CycleBackdrop()
+    public void CycleBackdropPublic()
     {
         if (backdropTextures == null || backdropTextures.Length == 0)
         {
@@ -120,14 +99,11 @@ public class ArchCanvasController : MonoBehaviour
         Debug.Log($"ArchCanvas backdrop image: {backdropIndex + 1} of {backdropTextures.Length}");
     }
 
-    void ApplyBackdropTexture()
+    private void ApplyBackdropTexture()
     {
         if (backdropRenderer == null) return;
         if (backdropTextures == null || backdropTextures.Length == 0) return;
         if (backdropIndex < 0 || backdropIndex >= backdropTextures.Length) return;
-
-        // Use the renderer's material instance (via .material, not .sharedMaterial)
-        // so changes don't persist to the asset.
         backdropRenderer.material.SetTexture("_BaseMap", backdropTextures[backdropIndex]);
     }
 }

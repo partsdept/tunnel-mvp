@@ -3,10 +3,10 @@ using UnityEngine;
 /// <summary>
 /// Cross-mode overlays and view toggles.
 ///
-/// Hotkeys:
-///   H   heartbeat sweep (output layer)
-///   D   debug overlay text (output layer)
-///   TAB toggle between flat 8K view and 3D arch preview
+/// Hotkeys (also callable via OSC dispatch):
+///   H   heartbeat sweep
+///   D   debug overlay text
+///   TAB toggle between flat output and 3D arch preview
 /// </summary>
 public class OverlayController : MonoBehaviour
 {
@@ -29,21 +29,12 @@ public class OverlayController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            ToggleSweep();
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            ToggleDebugOverlay();
-        }
-        else if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            TogglePreview();
-        }
+        if (Input.GetKeyDown(KeyCode.H)) ToggleSweepPublic();
+        else if (Input.GetKeyDown(KeyCode.D)) ToggleDebugOverlayPublic();
+        else if (Input.GetKeyDown(KeyCode.Tab)) TogglePreviewPublic();
     }
 
-    void ToggleSweep()
+    public void ToggleSweepPublic()
     {
         if (sweepObject == null) { Debug.LogWarning("Sweep object not assigned"); return; }
         bool nowActive = !sweepObject.activeSelf;
@@ -51,7 +42,7 @@ public class OverlayController : MonoBehaviour
         Debug.Log("Sweep: " + (nowActive ? "on" : "off"));
     }
 
-    void ToggleDebugOverlay()
+    public void ToggleDebugOverlayPublic()
     {
         if (debugOverlayObject == null) { Debug.LogWarning("Debug overlay object not assigned"); return; }
         bool nowActive = !debugOverlayObject.activeSelf;
@@ -59,7 +50,7 @@ public class OverlayController : MonoBehaviour
         Debug.Log("Debug overlay: " + (nowActive ? "on" : "off"));
     }
 
-    void TogglePreview()
+    public void TogglePreviewPublic()
     {
         if (outputCamera == null || preview3DCamera == null)
         {
